@@ -1,19 +1,36 @@
 import { useState, useEffect } from 'react';
-import { Navbar, Hero, About, Projects, Skills, Contact, Footer } from './components';
+import Lenis from 'lenis';
+import { Navbar, Hero, OnPC, OffPC, Contact, Footer } from './components';
 import './styles/global.css';
 
 function App() {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
+  // Initialize Lenis smooth scroll
   useEffect(() => {
-    // Check for saved theme preference or system preference
-    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      touchMultiplier: 2,
+    });
 
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+  // Theme management
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
     if (savedTheme) {
       setTheme(savedTheme);
-    } else if (!systemPrefersDark) {
-      setTheme('light');
     }
   }, []);
 
@@ -31,9 +48,8 @@ function App() {
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
-        <About />
-        <Projects />
-        <Skills />
+        <OnPC />
+        <OffPC />
         <Contact />
       </main>
       <Footer />

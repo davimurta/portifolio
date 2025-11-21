@@ -22,9 +22,8 @@ const Navbar = ({ theme, toggleTheme }: NavbarProps) => {
 
   const menuItems = [
     { label: 'Home', href: '#home' },
-    { label: 'Sobre', href: '#about' },
-    { label: 'Projetos', href: '#projects' },
-    { label: 'Skills', href: '#skills' },
+    { label: 'On-PC', href: '#on-pc' },
+    { label: 'Off-PC', href: '#off-pc' },
     { label: 'Contato', href: '#contact' },
   ];
 
